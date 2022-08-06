@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+{% block content %}
+    <div class="container-fluid">
+    <main class="tm-main">
+    <!-- Search form -->
+    {% include 'includes/search_engine.html' %}
+
+    <div class="row tm-row">
+
+        {% for item in blog %}
+            <article class="col-12 col-md-6 tm-post">
+                <hr class="tm-hr-primary">
+                <a href="{{ item.get_absolute_url }}" class="effect-lily tm-post-link tm-pt-60">
+                    <div class="tm-post-link-inner">
+                        <img src="{{ item.image.url }}" alt="Image" class="img-fluid">
+                    </div>
+                    <span class="position-absolute tm-new-badge">New</span>
+                    <h2 class="tm-pt-30 tm-color-primary tm-post-title">{{ item.title }}</h2>
+                </a>
+                <p class="tm-pt-30">
+                    {{ item.body |truncatewords:"30"|upper }}
+                </p>
+                <div class="d-flex justify-content-between tm-pt-45">
+                    {% for cat in item.category.all %}
+                        <span class="tm-color-primary">{{ cat }}</span>
+                    {% endfor %}
+                    <span class="tm-color-primary">{{ item.date }}</span>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <span>36 comments</span>
+                    <span>{{ item.author.first_name }}</span>
+                </div>
+            </article>
+        {% endfor %}
+
+    </div>
+    <div class="row tm-row tm-mt-100 tm-mb-75">
+
+        <div class="tm-prev-next-wrapper">
+
+            {% if blog.has_previous %}
+                <a href="?page={{ blog.previous_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+                   class="mb-2 tm-btn tm-btn-primary  tm-mr-20">Prev</a>
+            {% endif %}
+            {% if blog.has_next %}
+                <a href="?page={{ blog.next_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}"
+                   class="mb-2 tm-btn tm-btn-primary tm-prev-next">Next</a>
+            {% endif %}
+
+        </div>
+
+        <div class="tm-paging-wrapper">
+            <span class="d-inline-block mr-3">Page</span>
+            <nav class="tm-paging-nav d-inline-block">
+                <ul>
+                    {% for i in blog.paginator.page_range %}
+                        {% if i == blog.number %}
+                            <li class="tm-paging-item active">
+                                <a href="#" class="mb-2 tm-btn tm-paging-link">{{ i }}</a>
+                            </li>
+                        {% else %}
+                            <li class="tm-paging-item">
+                                <a href="?page={{ i }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}" class="mb-2 tm-btn tm-paging-link">{{ i }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}
+</main>
+</div>
+
+
+

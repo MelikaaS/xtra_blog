@@ -1,0 +1,34 @@
+{% load static %}
+
+
+<aside class="col-lg-4 tm-aside-col">
+    <div class="tm-post-sidebar">
+        <hr class="mb-3 tm-hr-primary">
+        <h2 class="mb-4 tm-post-title tm-color-primary">Categories</h2>
+        {% for cat in category %}
+            <ul class="tm-mb-75 pl-5 tm-category-list">
+                <li><a href="#" class="tm-color-primary">{{ cat.title }}</a></li>
+
+            </ul>
+        {% endfor %}
+        <hr class="mb-3 tm-hr-primary">
+        <h2 class="tm-mb-40 tm-post-title tm-color-primary">Related Post</h2>
+
+        {% for recent in post %}
+            {% if item.title != recent.title %}
+
+
+                <a href="{{ recent.get_absolute_url }}" class="d-block tm-mb-40">
+                    <figure>
+                        <img src="{{ recent.image.url }}" alt="Image" class="mb-3 img-fluid">
+                        <figcaption class="tm-color-primary">{{ recent.title }}
+                        </figcaption>
+                    </figure>
+                </a>
+            {% endif %}
+
+        {% endfor %}
+
+
+    </div>
+</aside>
